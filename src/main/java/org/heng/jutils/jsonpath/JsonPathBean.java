@@ -186,7 +186,7 @@ public class JsonPathBean {
 	public static void main(String...args){
 		
 		Map m = new HashMap();
-		setByPath(m, "7796", ".a.b.c.d[3][1].e[2].f[0]");
+//		setByPath(m, "7796", ".a.b.c.d[3][1].e[2].f[0]");
 		System.out.println(getByPath(m, ".a.b.c.d[3][1].e[2]"));
 		System.out.println(m);
 		

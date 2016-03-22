@@ -63,7 +63,7 @@
 					<source>1.8</source>
 					<target>1.8</target>
 					<encoding>utf8</encoding>
-					<failOnError>false</failOnError>
+					<!-- <failOnError>false</failOnError> -->
 					<!-- <archive> <manifest> <addClasspath>true</addClasspath> <mainClass>main.Main</mainClass> 
 						</manifest> </archive> -->
 				</configuration>
