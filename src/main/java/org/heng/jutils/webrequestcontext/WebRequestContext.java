@@ -40,6 +40,18 @@ public final class WebRequestContext implements Filter {
 	}
 	
 	
+	/**
+	 * @param path : 类似这样【.page.num】
+	 * @param val
+	 */
+	public static void set(final String path, final Object val){
+		if(ctx.get() == null){
+			ctx.set(new HashMap<>());
+		}
+		JsonPath.setByPath(ctx, val, path);
+	}
+	
+	
 	
 	/**
 	 * 这里放置填充context的动作逻辑，可以放多个。
