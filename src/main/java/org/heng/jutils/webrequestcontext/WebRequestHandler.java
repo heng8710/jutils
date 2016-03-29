@@ -5,7 +5,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public interface WebRequestVisitor {
+public interface WebRequestHandler {
 	
 	/**
 	 * 从(request, response)中获取数据放到context之中

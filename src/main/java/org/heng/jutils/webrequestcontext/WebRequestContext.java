@@ -58,7 +58,7 @@ public final class WebRequestContext implements Filter {
 	 * 比如说下面这个，是一个用来从query param中获取分页参数的逻辑（page.xx）
 	 * 同时有request, response这2个参数，能获取的应该是足够了。
 	 */
-	private static final List<WebRequestVisitor> visitors = Lists.newArrayList((req, resp, context) -> {
+	private static final List<WebRequestHandler> handlers = Lists.newArrayList((req, resp, context) -> {
 		for(final String pname: req.getParameterMap().keySet()){
 			if(pname != null && pname.startsWith("page.")){
 				JsonPath.setByPath(context, req.getParameter(pname), "."+pname);
@@ -102,10 +102,10 @@ public final class WebRequestContext implements Filter {
 				final HttpServletRequest req = (HttpServletRequest)request;
 				final HttpServletResponse resp = (HttpServletResponse)response;
 				ctx.set(new HashMap<>());
-				if(visitors != null){
-					for(final WebRequestVisitor visitor: visitors){
+				if(handlers != null){
+					for(final WebRequestHandler handler: handlers){
 						try {
-							visitor.visit(req, resp, ctx.get());
+							handler.visit(req, resp, ctx.get());
 						} catch (final Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
