@@ -7,6 +7,7 @@
 用apache-beanutils处理的话，如果中间节点为null，那么set是不成功的
 
 ####map,list对应语法：`.xxx`,`[123]`
+set好像可以不需要……？？
 
 ####举例：
 ```
