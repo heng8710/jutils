@@ -147,7 +147,7 @@ public final class JsonPath {
 	
 	
 	///////////////setter
-	public static void setByPath(final Object map, final Object val ,final String path){
+	public static void setByPath(final Object map ,final String path, final Object val){
 		if(path == null || path.length() == 0){
 			throw new IllegalArgumentException();
 		}

@@ -1,6 +1,10 @@
 package org.heng.jutils.webrequestcontext;
 
+
+import static org.heng.jutils.log.loghelper.LogHelper.*;
+
 import java.io.IOException;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,69 +21,66 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.heng.jutils.jsonpath.JsonPath;
 
+import com.google.common.base.CharMatcher;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 
 /**
- * 最初始目的是用来从query params中获取分页参数。
- * 留了扩充的步骤：从(request, response)中获取数据放到context之中。
+ * 可以在request范围内存放 一些东西的容器（可以层次化的）< br/>
+ * 放在threadlocal之中，自动清除 < br/>
+ * 用不同的key，作为隔离（default也算其中一个key） <br/>
  */
-@WebFilter(value={"/*"}/*, initParams={@WebInitParam(name="gacl",value="孤傲苍狼")}*/)
+@WebFilter(value={"/*"})
 public final class WebRequestContext implements Filter {
 	
-	private static final ThreadLocal<Map<String, Object>> ctx = new ThreadLocal<>();
+	private static final ThreadLocal<Map<String, Map<String, Object>>> ctx = new ThreadLocal<>();
+	
+	//这个要在第一层
+	private static final String DEFAULT_KEY = CharMatcher.anyOf(".").replaceFrom(WebRequestContext.class.toString(), '_');
 	
 	
 	
-	/**
-	 * @param path : 类似这样【.page.num】
-	 * @return
-	 */
-	public static Object get(final String path){
-		return JsonPath.getByPath(ctx.get(), path);
+	public static Object getDefault(final String path){
+		return get(DEFAULT_KEY, path);
+	}
+	
+	public static void setDefault(final String path, final Object val){
+		set(DEFAULT_KEY, path, val);
 	}
 	
 	
-	/**
-	 * @param path : 类似这样【.page.num】
-	 * @param val
-	 */
-	public static void set(final String path, final Object val){
-		if(ctx.get() == null){
-			ctx.set(new HashMap<>());
-		}
-		JsonPath.setByPath(ctx, val, path);
+	public static Map<String, Map<String, Object>> all(){
+		return ctx.get();
 	}
 	
 	
 	
-	/**
-	 * 这里放置填充context的动作逻辑，可以放多个。
-	 * 比如说下面这个，是一个用来从query param中获取分页参数的逻辑（page.xx）
-	 * 同时有request, response这2个参数，能获取的应该是足够了。
-	 */
-	private static final List<WebRequestHandler> handlers = Lists.newArrayList((req, resp, context) -> {
-		for(final String pname: req.getParameterMap().keySet()){
-			if(pname != null && pname.startsWith("page.")){
-				JsonPath.setByPath(context, req.getParameter(pname), "."+pname);
-			}
+	
+	public static Object get(final String key, final String path){
+		if(Strings.isNullOrEmpty(path)){
+			return null;
 		}
-	});
-
-//	public RequestContext(final List<RequestVisitor> visitors) {
-//		// TODO Auto-generated constructor stub
-//		this.visitors = visitors;
-//	}
-//
-//	public RequestContext(final RequestVisitor visitor) {
-//		// TODO Auto-generated constructor stub
-//		this.visitors = Lists.newArrayList(visitor);
-//	}
-//
-//	public RequestContext() {
-//		// TODO Auto-generated constructor stub
-//		this.visitors = Lists.newArrayList();
-//	}
+		return JsonPath.getByPath(ensureContainer(key), path);
+	}
+	
+	public static void set(final String key, final String path, final Object val){
+		if(Strings.isNullOrEmpty(path)){
+			throw new IllegalArgumentException("path不能为空");
+		}
+		JsonPath.setByPath(ensureContainer(key), path, val);
+	}
+	
+	private static Map<String, Object> ensureContainer(final String key){
+		Map<String, Object> container = ctx.get().get(key);
+		if(container == null){
+			container = Maps.newHashMap();
+			ctx.get().put(key, container);
+		}
+		return container;
+	}
+	
 	
 	/**
 	 * @see Filter#destroy()
@@ -92,32 +93,10 @@ public final class WebRequestContext implements Filter {
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		// TODO Auto-generated method stub
-		// place your code here
-
-		// pass the request along the filter chain
-		
-		try {
-			if(request instanceof HttpServletRequest && response instanceof HttpServletResponse){
-				final HttpServletRequest req = (HttpServletRequest)request;
-				final HttpServletResponse resp = (HttpServletResponse)response;
-				ctx.set(new HashMap<>());
-				if(handlers != null){
-					for(final WebRequestHandler handler: handlers){
-						try {
-							handler.visit(req, resp, ctx.get());
-						} catch (final Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				}
-			}
+		try{
+			ctx.set(Maps.newHashMap());
 			chain.doFilter(request, response);
-		} catch (final Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally{
+		}finally{ 
 			ctx.remove();
 		}
 	}
@@ -126,7 +105,6 @@ public final class WebRequestContext implements Filter {
 	 * @see Filter#init(FilterConfig)
 	 */
 	public void init(FilterConfig fConfig) throws ServletException {
-		// TODO Auto-generated method stub
 	}
 
 }

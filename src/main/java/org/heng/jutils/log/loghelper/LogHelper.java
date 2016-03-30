@@ -83,6 +83,10 @@ public class LogHelper {
 		getLogger().info(_log(msg, LOG_STACK_TRACE_INDEX));
 	}
 	
+	public static void info(final Throwable t){
+		getLogger().info(_log(LOG_STACK_TRACE_INDEX), t);
+	}
+	
 	public static void info(final String msg, final Throwable t){
 		getLogger().info(_log(msg, LOG_STACK_TRACE_INDEX), t);
 	}
@@ -98,6 +102,9 @@ public class LogHelper {
 	public static void debug(final String msg){
 		getLogger().debug(_log(msg, LOG_STACK_TRACE_INDEX));
 	}
+	public static void debug(final Throwable t){
+		getLogger().debug(_log(LOG_STACK_TRACE_INDEX), t);
+	}
 	public static void debug(final String msg, final Throwable t){
 		getLogger().debug(_log(msg, LOG_STACK_TRACE_INDEX), t);
 	}
@@ -111,6 +118,9 @@ public class LogHelper {
 	//////warn
 	public static void warn(final String msg){
 		getLogger().warn(_log(msg, LOG_STACK_TRACE_INDEX));
+	}
+	public static void warn(final Throwable t){
+		getLogger().warn(_log(LOG_STACK_TRACE_INDEX), t);
 	}
 	public static void warn(final String msg, final Throwable t){
 		getLogger().warn(_log(msg, LOG_STACK_TRACE_INDEX), t);
@@ -126,6 +136,9 @@ public class LogHelper {
 	////error
 	public static void error(final String msg){
 		getLogger().error(_log(msg, LOG_STACK_TRACE_INDEX));
+	}
+	public static void error(final Throwable t){
+		getLogger().error(_log(LOG_STACK_TRACE_INDEX), t);
 	}
 	public static void error(final String msg, final Throwable t){
 		getLogger().error(_log(msg, LOG_STACK_TRACE_INDEX), t);
