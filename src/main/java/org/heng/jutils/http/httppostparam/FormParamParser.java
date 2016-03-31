@@ -1,16 +1,10 @@
 package org.heng.jutils.http.httppostparam;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.Map;
 
-import javax.servlet.ReadListener;
-import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -35,7 +29,7 @@ public class FormParamParser {
 	private static final String SUPPORT_HTTP_METHOD = "POST";
 	private static final String SUPPORT_CONTENT_TYPE = "application/x-www-form-urlencoded";
 	
-	private static final int DEFAULT_REQUEST_CONTENT_LENGTH = 10*1024; //10k
+	private static final int DEFAULT_REQUEST_CONTENT_LENGTH = 1000*1024; //10k
 	
 	/**
 	 * 这不适合在servlet filter之中做，而是应该在应用端做，因为流默认不可读多次，而且是有状态的，在复杂的环境中，会让事情不可控。
