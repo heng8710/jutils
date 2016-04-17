@@ -1,8 +1,6 @@
 package org.heng.jutils.js;
 
-import static org.heng.jutils.log.loghelper.LogHelper.info;
-
-import java.net.URL;
+import java.net.URI;
 import java.nio.file.Paths;
 import java.util.Map;
 
@@ -15,10 +13,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 
+import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
+
+
+@Slf4j
 public class JSParser {
 	
-	
-	public static final String DEFAULT_JSFILE = "settings.js";
+	//在settings.properties中对应于settings.js的位置
+	private static final String JS_SETTINGS_KEY = "settings";
 	
 	
 	/**
@@ -28,19 +31,16 @@ public class JSParser {
 	 * @param configFilePath：相对于[classes]的路径；基于文件系统的路径表示方法，最好是用[/]作为分隔符，【要带.js结尾（注意大小 写）】
 	 * @return
 	 */
-	public static Map<String,Object> parse(final String jsFile){
+	public static Map<String,Object> parse(@NonNull final String settingsKey){
 		
 		try {
+			final URI jsSettings = SettingsHelper.relativeFile(settingsKey);
+			
 			//启动js引擎
 			final ScriptEngineManager sem = new ScriptEngineManager();
 			final ScriptEngine engine = sem.getEngineByName("javascript");
 			
-			final URL settings = JSParser.class.getClassLoader().getResource(jsFile);
-			info(String.format("jsFile=[%s]", settings));
-			if(settings == null){
-				throw new IllegalStateException(String.format("%s 找不到", jsFile));
-			}
-		    final String objStr = Files.toString(Paths.get(settings.toURI()).toFile(), Charsets.UTF_8);
+		    final String objStr = Files.toString(Paths.get(jsSettings).toFile(), Charsets.UTF_8);
 		    final String root = "root";
 		    //把配置对象字面量（js），转成json格式字符串出来
 		    final String str = (String)engine.eval(String.format("var %s=%s; JSON.stringify(%s);", root, objStr, root));
@@ -48,7 +48,7 @@ public class JSParser {
 		    final Map<String,Object> map = new ObjectMapper().readValue(str, Map.class);
 		    return map;
 		} catch (final Exception e) {
-			throw new IllegalStateException(String.format("读取配置文件=[%s]失败", jsFile) , e);
+			throw new IllegalStateException(String.format("解析settings[%s]失败", settingsKey), e);
 		}
 	}
 	
@@ -56,11 +56,11 @@ public class JSParser {
 	
 	
 	public static Object get(final String path){
-		return get(DEFAULT_JSFILE, path);
+		return get(JS_SETTINGS_KEY, path);
 	}
 	
-	public static Object get(final String jsFile, final String path){
-		final Map<String, Object> root = parse(jsFile);
+	public static Object get(final String settingsKey, final String path){
+		final Map<String, Object> root = parse(settingsKey);
 		
 		if(root == null || root.isEmpty()){
 			return null;
@@ -70,11 +70,11 @@ public class JSParser {
 	
 	
 	public static String getString(final String path){
-		return getString(DEFAULT_JSFILE, path);
+		return getString(JS_SETTINGS_KEY, path);
 	}
 	
-	public static String getString(final String jsFile, final String path){
-		final Object r = get(jsFile, path);
+	public static String getString(final String settingsKey, final String path){
+		final Object r = get(settingsKey, path);
 		if(r == null){
 			return null;
 		}
@@ -82,10 +82,10 @@ public class JSParser {
 	}
 	
 	public static Integer getInteger(final String path){
-		return getInteger(DEFAULT_JSFILE, path);
+		return getInteger(JS_SETTINGS_KEY, path);
 	}
-	public static Integer getInteger(final String jsFile, final String path){
-		final Object r = get(jsFile, path);
+	public static Integer getInteger(final String settingsKey, final String path){
+		final Object r = get(settingsKey, path);
 		if(r == null){
 			return null;
 		}

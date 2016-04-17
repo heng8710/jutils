@@ -7,6 +7,7 @@
 	
 	<properties>
 		<spring.version>3.2.16.RELEASE</spring.version>
+		<!-- <jsSetting>dev_settings.js</jsSetting> -->
 	</properties>
 
 	<dependencies>
@@ -153,5 +154,48 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		
+		
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>
+	
+	
+	
+	
+	<profiles>
+		<profile>
+			<id>dev_js_settings</id>
+			<!-- <activation>
+				<activeByDefault>true</activeByDefault>
+			</activation> -->
+			<properties>
+				<jsSetting>dev_settings.js</jsSetting>
+			</properties>
+			
+			<!-- <build>
+				<filters>
+					<filter>src/main/resources/xxx.properties</filter>
+				</filters>
+			</build> -->
+		</profile>
+		
+		<profile>
+			<id>pro_js_settings</id>
+			<!-- <activation>
+				<activeByDefault>true</activeByDefault>
+			</activation> -->
+			<properties>
+				<jsSetting>settings.js</jsSetting>
+			</properties>
+		</profile>
+	</profiles>
 </project>

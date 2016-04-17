@@ -1,11 +1,15 @@
 # js parser解析classpath下的某一个xx.js文件
 
 
+####settingsKey必须是在settings.properties之中注册的key
+value即为xx.js文件的路径（相对于classpath的）
+
+
 ####例子
 ```
-		Map m = JSParser.parse("settings.js");
+		Map m = JSParser.parse("settings");
 		System.out.println(m);
-		assertEquals(JSParser.get("settings.js", ".working_directory.windows.command"), "%tmp%");
+		assertEquals(JSParser.get("settings", ".working_directory.windows.command"), "%tmp%");
 ```
 
 

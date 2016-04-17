@@ -63,13 +63,13 @@ public final class RequestHelper implements Filter {
 				req.set((HttpServletRequest)request);
 				resp.set((HttpServletResponse)response);
 			}	
-			System.out.println("----------headers:");
-			for(Enumeration<String> it= req.get().getHeaderNames();it.hasMoreElements();){
-				final String header = it.nextElement();
-				System.out.println(String.format("%s:%s", header, req.get().getHeader(header)));
-			}
-			System.out.println("----------headers:end-------------------------");
-			System.out.println("remote:"+req.get().getRemoteAddr() +":"+req.get().getRemotePort());
+//			System.out.println("----------headers:");
+//			for(Enumeration<String> it= req.get().getHeaderNames();it.hasMoreElements();){
+//				final String header = it.nextElement();
+//				System.out.println(String.format("%s:%s", header, req.get().getHeader(header)));
+//			}
+//			System.out.println("----------headers:end-------------------------");
+//			System.out.println("remote:"+req.get().getRemoteAddr() +":"+req.get().getRemotePort());
 			chain.doFilter(request, response);
 		}finally{
 			req.remove();

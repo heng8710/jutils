@@ -8,6 +8,10 @@
 
 ####本质上，都是针对uri=`/*`的一个`Servlet Filter`而已
 
+####如果没有效果的话，请检查项目的web.xml，多半又是那个metadata-complete参数被设置为true了
+导致注解失效
+
+
 ####起初的目的就是通过它来获取http request中的分页请求参数
 page.xxx
 再在应用当中通过：`QueryParamContext.get(".page.xxx")`，再取回来。

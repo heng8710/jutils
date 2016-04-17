@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
 
+import lombok.NonNull;
+
 /**
  * 0【核心】. 自动关联所调用的上一层方法，这经常是一个业务方法，而且，按照命令约定原则，（类名+方法名）经常 就能代表所操作的事情了。
  * 0【核心】。  让日志调用时的msg，只需要传有意义的消息，而不需要传上下文信息。
@@ -77,21 +79,32 @@ public class LogHelper {
 	
 	
 	
-	
 	//////info
 	public static void info(final String msg){
 		getLogger().info(_log(msg, LOG_STACK_TRACE_INDEX));
 	}
 	
+	public static void info(final Logger logger, final String msg){
+		logger.info(_log(msg, LOG_STACK_TRACE_INDEX));
+	}
+	
+	
+	
+	
 	public static void info(final Throwable t){
 		getLogger().info(_log(LOG_STACK_TRACE_INDEX), t);
 	}
+	public static void info(final Logger logger, final Throwable t){
+		logger.info(_log(LOG_STACK_TRACE_INDEX), t);
+	}
+	
+	
 	
 	public static void info(final String msg, final Throwable t){
 		getLogger().info(_log(msg, LOG_STACK_TRACE_INDEX), t);
 	}
 	
-	public static void info(final String msg, final Throwable t, final Logger logger){
+	public static void info(final Logger logger, final String msg, final Throwable t){
 		logger.info(_log(msg, LOG_STACK_TRACE_INDEX), t);
 	}
 	
@@ -102,14 +115,23 @@ public class LogHelper {
 	public static void debug(final String msg){
 		getLogger().debug(_log(msg, LOG_STACK_TRACE_INDEX));
 	}
+	public static void debug(final Logger logger, final String msg){
+		logger.debug(_log(msg, LOG_STACK_TRACE_INDEX));
+	}
+	
 	public static void debug(final Throwable t){
 		getLogger().debug(_log(LOG_STACK_TRACE_INDEX), t);
 	}
+	public static void debug(final Logger logger, final Throwable t){
+		logger.debug(_log(LOG_STACK_TRACE_INDEX), t);
+	}
+	
+	
 	public static void debug(final String msg, final Throwable t){
 		getLogger().debug(_log(msg, LOG_STACK_TRACE_INDEX), t);
 	}
 	
-	public static void debug(final String msg, final Throwable t, final Logger logger){
+	public static void debug(final Logger logger, final String msg, final Throwable t){
 		logger.debug(_log(msg, LOG_STACK_TRACE_INDEX), t);
 	}
 	
@@ -119,14 +141,23 @@ public class LogHelper {
 	public static void warn(final String msg){
 		getLogger().warn(_log(msg, LOG_STACK_TRACE_INDEX));
 	}
+	public static void warn(final Logger logger, final String msg){
+		logger.warn(_log(msg, LOG_STACK_TRACE_INDEX));
+	}
+	
 	public static void warn(final Throwable t){
 		getLogger().warn(_log(LOG_STACK_TRACE_INDEX), t);
 	}
+	public static void warn(final Logger logger,final Throwable t){
+		logger.warn(_log(LOG_STACK_TRACE_INDEX), t);
+	}
+	
+	
 	public static void warn(final String msg, final Throwable t){
 		getLogger().warn(_log(msg, LOG_STACK_TRACE_INDEX), t);
 	}
 	
-	public static void warn(final String msg, final Throwable t, final Logger logger){
+	public static void warn(final Logger logger, final String msg, final Throwable t){
 		logger.warn(_log(msg, LOG_STACK_TRACE_INDEX), t);
 	}
 	
@@ -137,14 +168,23 @@ public class LogHelper {
 	public static void error(final String msg){
 		getLogger().error(_log(msg, LOG_STACK_TRACE_INDEX));
 	}
+	public static void error(final Logger logger, final String msg){
+		logger.error(_log(msg, LOG_STACK_TRACE_INDEX));
+	}
+	
 	public static void error(final Throwable t){
 		getLogger().error(_log(LOG_STACK_TRACE_INDEX), t);
 	}
+	public static void error(final Logger logger, final Throwable t){
+		logger.error(_log(LOG_STACK_TRACE_INDEX), t);
+	}
+	
+	
 	public static void error(final String msg, final Throwable t){
 		getLogger().error(_log(msg, LOG_STACK_TRACE_INDEX), t);
 	}
 	
-	public static void error(final String msg, final Throwable t, final Logger logger){
+	public static void error(final Logger logger, final String msg, final Throwable t){
 		logger.error(_log(msg, LOG_STACK_TRACE_INDEX), t);
 	}
 	

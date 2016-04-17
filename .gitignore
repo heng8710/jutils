@@ -1,4 +1,5 @@
-/target/
-.project
-.settings/**
-.classpath
+/**/target/
+/**/.project
+/**/.settings/**
+/**/.classpath
+/**/logs.dir_IS_UNDEFINED/**
