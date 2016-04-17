@@ -32,7 +32,7 @@ import com.google.common.collect.Maps;
  * 放在threadlocal之中，自动清除 < br/>
  * 用不同的key，作为隔离（default也算其中一个key） <br/>
  */
-@WebFilter(value={"/*"})
+@WebFilter(urlPatterns={"/*"})
 public final class WebRequestContext implements Filter {
 	
 	private static final ThreadLocal<Map<String, Map<String, Object>>> ctx = new ThreadLocal<>();

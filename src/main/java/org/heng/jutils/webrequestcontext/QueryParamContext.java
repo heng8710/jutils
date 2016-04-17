@@ -29,7 +29,7 @@ import static org.heng.jutils.log.loghelper.LogHelper.*;
  * 可能并不适用于"MultiValue"的情况 <br/>
  * 值很可能都String化了 ，要数值格式自己去格式化吧。<br/>
  */
-@WebFilter(value={"/*"})
+@WebFilter(urlPatterns={"/*"})
 public class QueryParamContext implements Filter{
 	
 	

@@ -25,7 +25,7 @@ import org.heng.jutils.jsonpath.JsonPath;
  * 获取所有cookie key/value <br/>
  * 这里只取k/v就好了，对于cookie中的其他成份，如果真的需要，自己去取就是了。 <br/ >
  */
-@WebFilter(value={"/*"})
+@WebFilter(urlPatterns={"/*"})
 public class CookieContext implements Filter{
 	
 	
