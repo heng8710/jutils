@@ -48,6 +48,65 @@ public final class RequestHelper implements Filter {
 	}
 	
 	
+	public static String httpMeta(){
+		final HttpServletRequest hreq = req.get();
+		final HttpServletResponse hresp = resp.get();
+		
+		final StringBuilder buff = new StringBuilder().append("http request meta: ******************************************\n");
+		
+		buff.append(String.format("method: [%s]\n", hreq.getMethod()));
+		buff.append(String.format("scheme: [%s]\n", hreq.getScheme()));
+		
+		buff.append(String.format("query string: [%s]\n", hreq.getQueryString()));
+		
+		buff.append(String.format("request uri: [%s]\n", hreq.getRequestURI()));
+		buff.append(String.format("context path: [%s]\n", hreq.getContextPath()));
+		
+		
+		buff.append(String.format("associated servlet path: [%s]\n", hreq.getPathInfo()));
+		
+		
+		buff.append("query params: \n------------------------------------\n");
+		for(Enumeration<String> it= hreq.getParameterNames();it.hasMoreElements();){
+			final String key = it.nextElement();
+			buff.append(String.format("%s=%s\n", hreq.getParameter(key)));
+		}
+		buff.append("------------------------------------\n");
+		
+		buff.append("headers: \n------------------------------------\n");
+		for(Enumeration<String> it= hreq.getHeaderNames();it.hasMoreElements();){
+			final String key = it.nextElement();
+			buff.append(String.format("%s=%s\n", hreq.getHeader(key)));
+		}
+		buff.append("------------------------------------\n");
+		
+		buff.append(String.format("remote address: [%s]\n", hreq.getRemoteAddr()));
+		buff.append(String.format("remote host: [%s]\n", hreq.getRemoteHost()));
+		buff.append(String.format("remote port: [%s]\n", hreq.getRemotePort()));
+		
+		buff.append("******************************************\n");
+		
+		buff.append("http response meta: ******************************************\n");
+		
+		
+		if(hresp.isCommitted()){
+			buff.append(String.format("status: [%s]\n", hresp.getStatus()));
+		}
+		buff.append(String.format("content-type: [%s]\n", hresp.getContentType()));
+		buff.append(String.format("encoding: [%s]\n", hresp.getCharacterEncoding()));
+		buff.append("headers: \n------------------------------------\n");
+		for(final String name: hresp.getHeaderNames()){
+			buff.append(String.format("%s=%s\n", hreq.getParameter(name)));
+		}
+		buff.append("------------------------------------\n");
+		buff.append("******************************************\n");
+		
+		return buff.toString();
+	}
+	
+	
+	
+	
 	/**
 	 * @see Filter#destroy()
 	 */
