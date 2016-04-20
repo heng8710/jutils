@@ -3,6 +3,7 @@ package org.heng.jutils.webrequestcontext;
 
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.Map.Entry;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -18,8 +19,6 @@ import org.heng.jutils.http.httppostparam.FormParamParser;
 
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Strings;
-
-import lombok.val;
 
 
 /**
@@ -72,7 +71,7 @@ public final class RequestHelper implements Filter {
 		
 		buff.append("[query params]: \n------------------------------------\n");
 		if(!Strings.isNullOrEmpty(hreq.getQueryString())){
-			for(val entry: FormParamParser.parse(hreq.getQueryString()).entrySet()){
+			for(final Entry<String, Object> entry: FormParamParser.parse(hreq.getQueryString()).entrySet()){
 				final String key = entry.getKey();
 				buff.append(String.format("%s=%s\n", key, entry.getValue()));
 			}

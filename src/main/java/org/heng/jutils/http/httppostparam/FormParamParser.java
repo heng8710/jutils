@@ -68,6 +68,7 @@ public class FormParamParser {
 	
 	/**
 	 * （只做token解析）
+	 * 
 	 * @param s： 【jjww=&   	orderby=1&myname=东方& show =title%2Cbname&myorder=1&keyboard=abccc&button=%CB%D1%CB%F7%C2%FE%BB%AD】
 	 * @return
 	 */
