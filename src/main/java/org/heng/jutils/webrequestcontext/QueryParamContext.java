@@ -15,6 +15,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.heng.jutils.http.httppostparam.FormParamParser;
 import org.heng.jutils.jsonpath.JsonPath;
 
 
@@ -81,16 +82,20 @@ public class QueryParamContext implements Filter{
 				try {
 					//ctx初始化
 					//这之后，get、set都安全
-					ctx.set(new HashMap<>());
+//					ctx.set(new HashMap<>());
+					
+					ctx.set(FormParamParser.parse(req.getQueryString()));
+					
 					//下面不会有空指针 
-					for(final String pname: req.getParameterMap().keySet()){
-						try {
-//							System.out.println(":"+ pname + "---" + req.getParameter(pname));
-							set("." + pname, req.getParameter(pname));
-						} catch (Exception e) {
-							error(String.format("query param: name=[%s], value=[%s]的类型与已经解析的参数=[%s]类型不匹配", pname,req.getParameter(pname), all()));
-						}
-					}
+//					for(final String pname: req.getParameterMap().keySet()){
+//						try {
+////							System.out.println(":"+ pname + "---" + req.getParameter(pname));
+//							set("." + pname, req.getParameter(pname));
+//							FormParamParser.parse(req.getQueryString());
+//						} catch (Exception e) {
+//							error(String.format("query param: name=[%s], value=[%s]的类型与已经解析的参数=[%s]类型不匹配", pname,req.getParameter(pname), all()));
+//						}
+//					}
 				} catch (final Exception e) {
 					error(e);
 				}

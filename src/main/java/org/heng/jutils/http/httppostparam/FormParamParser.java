@@ -20,6 +20,8 @@ import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 
+import lombok.NonNull;
+
 /**
  * 解析表单（application/x-www-form-urlencoded）格式的字符串，解析成map层次。
  */
@@ -65,7 +67,7 @@ public class FormParamParser {
 	 * @param s： 【jjww=&   	orderby=1&myname=东方& show =title%2Cbname&myorder=1&keyboard=abccc&button=%CB%D1%CB%F7%C2%FE%BB%AD】
 	 * @return
 	 */
-	public static Map<String, Object> parse(final String s){
+	public static Map<String, Object> parse(@NonNull final String s){
 		final String err = String.format("解析=[%s]不对，无法正常解析", s);
 		try {
 			
