@@ -47,7 +47,11 @@ public class FormParamParser {
 		final byte[] buffer = new byte[req.getContentLength() >=0 ? req.getContentLength() : DEFAULT_REQUEST_CONTENT_LENGTH];
 		try {
 			final int length = IOUtils.read(req.getInputStream(), buffer);
-			return parse(new String(buffer, 0, length, Charset.forName("utf-8")));
+			if(length > 0){
+				return parse(new String(buffer, 0, length, Charset.forName("utf-8")));
+			}else{
+				return Maps.newHashMap();
+			}
 		} catch (IOException e) {
 			throw new RuntimeException("尝试从http request的输入 流中解析参数时出错", e);
 		} 

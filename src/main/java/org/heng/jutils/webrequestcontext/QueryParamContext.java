@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.heng.jutils.http.httppostparam.FormParamParser;
 import org.heng.jutils.jsonpath.JsonPath;
 
+import com.google.common.base.Strings;
 
 import static org.heng.jutils.log.loghelper.LogHelper.*;
 
@@ -82,9 +83,11 @@ public class QueryParamContext implements Filter{
 				try {
 					//ctx初始化
 					//这之后，get、set都安全
-//					ctx.set(new HashMap<>());
-					
-					ctx.set(FormParamParser.parse(req.getQueryString()));
+					if(Strings.isNullOrEmpty(req.getQueryString())){
+						ctx.set(new HashMap<>());
+					}else{
+						ctx.set(FormParamParser.parse(req.getQueryString()));
+					}
 					
 					//下面不会有空指针 
 //					for(final String pname: req.getParameterMap().keySet()){

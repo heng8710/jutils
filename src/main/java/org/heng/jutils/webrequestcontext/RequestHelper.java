@@ -71,9 +71,11 @@ public final class RequestHelper implements Filter {
 		
 		
 		buff.append("[query params]: \n------------------------------------\n");
-		for(val entry: FormParamParser.parse(hreq.getQueryString()).entrySet()){
-			final String key = entry.getKey();
-			buff.append(String.format("%s=%s\n", key, entry.getValue()));
+		if(!Strings.isNullOrEmpty(hreq.getQueryString())){
+			for(val entry: FormParamParser.parse(hreq.getQueryString()).entrySet()){
+				final String key = entry.getKey();
+				buff.append(String.format("%s=%s\n", key, entry.getValue()));
+			}
 		}
 		buff.append("------------------------------------\n");
 		
